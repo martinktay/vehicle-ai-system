@@ -97,6 +97,8 @@ That makes the architecture presentable as more than a single-device prototype.
 
 ## System Architecture
 
+![System architecture overview](docs/assets/system-architecture-screenshot.png)
+
 ```mermaid
 flowchart LR
     A["Sensors and Actuators<br/>DS18B20 / Ultrasonic / LDR / Thermistor / Relays / LCD"] --> B["ESP32 Edge Controller"]
