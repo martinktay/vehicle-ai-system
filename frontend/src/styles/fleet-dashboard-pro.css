@@ -1,0 +1,368 @@
+/* ============================================================================
+   Agentic AI Smart Fleet Monitoring — Professional Dashboard Styles
+   Theme: High-Credibility, Operational, Sustainability-Focused
+   ============================================================================ */
+
+.fleet-dashboard-pro {
+  --fleet-bg-page: #f1f5f9;
+  --fleet-bg-card: #ffffff;
+  --fleet-text-main: #0f172a;
+  --fleet-text-muted: #64748b;
+  --fleet-primary: #1e293b;
+  --fleet-accent: #2563eb;
+  --fleet-success: #10b981;
+  --fleet-warning: #f59e0b;
+  --fleet-danger: #dc2626;
+  --fleet-border: #e2e8f0;
+  --fleet-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --fleet-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --fleet-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  min-height: 100vh;
+  background-color: var(--fleet-bg-page);
+  color: var(--fleet-text-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.5;
+}
+
+/* ---- Header ---- */
+.pro-header {
+  background: var(--fleet-bg-card);
+  border-bottom: 1px solid var(--fleet-border);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.pro-header-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.pro-header-brand h1 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--fleet-primary);
+  letter-spacing: -0.02em;
+}
+
+.pro-header-brand p {
+  font-size: 0.75rem;
+  color: var(--fleet-text-muted);
+  margin: 0;
+  font-weight: 500;
+}
+
+.pro-header-status {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  border: 1px solid var(--fleet-border);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ---- Hero Section ---- */
+.pro-hero {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.hero-card {
+  background: var(--fleet-bg-card);
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--fleet-border);
+  box-shadow: var(--fleet-shadow);
+}
+
+.hero-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.hero-description {
+  color: var(--fleet-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.agent-loop {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.loop-step {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--fleet-accent);
+  background: rgba(37, 99, 235, 0.05);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.node-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #f8fafc;
+  border: 1px solid var(--fleet-border);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.node-label { font-size: 0.65rem; font-weight: 700; color: var(--fleet-text-muted); text-transform: uppercase; }
+
+/* ---- KPI Row ---- */
+.pro-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  padding: 0 2rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pro-kpi-card {
+  background: var(--fleet-bg-card);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--fleet-border);
+  box-shadow: var(--fleet-shadow-sm);
+}
+
+.kpi-label { font-size: 0.7rem; font-weight: 700; color: var(--fleet-text-muted); text-transform: uppercase; letter-spacing: 0.025em; }
+.kpi-value { font-size: 1.5rem; font-weight: 800; color: var(--fleet-primary); margin-top: 0.25rem; }
+.kpi-unit { font-size: 0.85rem; color: var(--fleet-text-muted); font-weight: 600; margin-left: 0.2rem; }
+
+/* ---- Main Grid ---- */
+.pro-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 0 2rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--fleet-primary);
+}
+
+/* ---- Vehicle Cards ---- */
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.pro-vehicle-card {
+  background: var(--fleet-bg-card);
+  border: 1px solid var(--fleet-border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: var(--fleet-shadow-sm);
+  transition: all 0.2s;
+}
+
+.pro-vehicle-card:hover {
+  border-color: var(--fleet-accent);
+  box-shadow: var(--fleet-shadow);
+}
+
+.v-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.v-id-group { display: flex; flex-direction: column; }
+.v-id { font-weight: 800; font-size: 1.1rem; font-family: 'JetBrains Mono', monospace; }
+.v-type { font-size: 0.65rem; color: var(--fleet-text-muted); font-weight: 700; text-transform: uppercase; }
+
+.v-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.v-stat-item {
+  background: #f8fafc;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.v-stat-label { font-size: 0.6rem; color: var(--fleet-text-muted); font-weight: 700; text-transform: uppercase; }
+.v-stat-value { font-size: 0.9rem; font-weight: 700; }
+
+.v-footer {
+  border-top: 1px solid var(--fleet-border);
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.v-relay-group { display: flex; gap: 0.5rem; }
+.v-relay { font-size: 0.65rem; font-weight: 700; color: var(--fleet-text-muted); }
+.v-relay.on { color: var(--fleet-accent); }
+
+/* ---- AI Panel ---- */
+.pro-ai-panel {
+  background: #f8fafc;
+  border: 1px solid var(--fleet-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.ai-loop-viz {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.viz-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.step-number {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--fleet-primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.step-info h4 { font-size: 0.75rem; font-weight: 800; margin: 0; text-transform: uppercase; color: var(--fleet-text-muted); }
+.step-info p { font-size: 0.85rem; margin: 0.25rem 0 0 0; color: var(--fleet-primary); font-weight: 500; }
+
+/* ---- Climate Panel ---- */
+.pro-climate-panel {
+  background: linear-gradient(135deg, #f0fdf4, #ffffff);
+  border: 1px solid #dcfce7;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.climate-disclaimer {
+  font-size: 0.65rem;
+  color: var(--fleet-text-muted);
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* ---- Table ---- */
+.pro-table-wrapper {
+  background: var(--fleet-bg-card);
+  border: 1px solid var(--fleet-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: var(--fleet-shadow-sm);
+}
+
+.pro-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.pro-table th {
+  background: #f8fafc;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--fleet-text-muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--fleet-border);
+}
+
+.pro-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pro-table tr:last-child td { border-bottom: none; }
+
+/* ---- Badges ---- */
+.badge-pro {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge-success { background: #dcfce7; color: var(--fleet-success); }
+.badge-warning { background: #fef3c7; color: var(--fleet-warning); }
+.badge-danger { background: #fee2e2; color: var(--fleet-danger); }
+.badge-accent { background: #dbeafe; color: var(--fleet-accent); }
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .pro-hero { grid-template-columns: 1fr; }
+  .pro-kpi-row { grid-template-columns: repeat(3, 1fr); }
+  .pro-main-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .pro-kpi-row { grid-template-columns: repeat(2, 1fr); }
+}

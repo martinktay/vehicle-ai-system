@@ -1,0 +1,443 @@
+/**
+ * Keke Visualizer Styles
+ * 
+ * Premium, minimal styling for the Keke vehicle visualizer
+ * Design: Dashboard-grade, technical aesthetic
+ * Colors: Muted palette, soft accents
+ */
+
+/* ============================================================================
+   Container & Layout
+   ============================================================================ */
+
+.keke-visualizer-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.keke-visualizer {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ============================================================================
+   Layer 1: Background (Road Pattern)
+   ============================================================================ */
+
+.background .road-surface {
+  opacity: 0.15;
+}
+
+.background .road-surface.moving {
+  animation: roadScroll 3s linear infinite;
+}
+
+@keyframes roadScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100px);
+  }
+}
+
+/* ============================================================================
+   Layer 2: Vehicle Body
+   ============================================================================ */
+
+.vehicle-body {
+  transition: transform 300ms ease-out;
+}
+
+.vehicle-body .keke-body {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.vehicle-body .headlight {
+  animation: headlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes headlightPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Internal Fuel System Components */
+.fuel-system-internal .fuel-tank {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.fuel-system-internal .engine-compartment {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.fuel-system-internal .engine-block {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* ============================================================================
+   Layer 3: Wheels
+   ============================================================================ */
+
+.wheels .wheel {
+  transform-origin: center;
+  transition: transform 300ms ease-out;
+}
+
+.wheels.rotating .wheel {
+  animation: wheelRotate 1.5s linear infinite;
+}
+
+@keyframes wheelRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================
+   Layer 4: Engine/Thermal Zone
+   ============================================================================ */
+
+.thermal-zone .heat-glow {
+  transition: r 500ms ease-out;
+}
+
+.thermal-zone .heat-low {
+  animation: heatPulse 3s ease-in-out infinite;
+}
+
+.thermal-zone .heat-medium {
+  animation: heatPulse 2s ease-in-out infinite;
+}
+
+.thermal-zone .heat-high {
+  animation: heatPulse 1s ease-in-out infinite;
+}
+
+@keyframes heatPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1.3;
+  }
+}
+
+/* ============================================================================
+   Layer 5: Energy Source Nodes (Internal)
+   ============================================================================ */
+
+.energy-nodes .node {
+  transition: all 300ms ease-out;
+}
+
+.energy-nodes .node-inactive .node-inner {
+  opacity: 0.15;
+}
+
+.energy-nodes .node-inactive .node-outer {
+  opacity: 0.4;
+}
+
+.energy-nodes .node-active .node-inner {
+  opacity: 1;
+  animation: nodePulse 1.5s ease-in-out infinite;
+}
+
+.energy-nodes .node-active .node-outer {
+  filter: drop-shadow(0 0 6px currentColor);
+  opacity: 1;
+}
+
+@keyframes nodePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.85;
+  }
+}
+
+.energy-nodes .node-label-internal {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* ============================================================================
+   Layer 6: Energy Flow Paths (Internal Fuel Lines)
+   ============================================================================ */
+
+.flow-paths .fuel-line-group {
+  transition: opacity 300ms ease-out;
+}
+
+.flow-paths .fuel-pipe-bg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+.flow-paths .flow-path {
+  transition: opacity 300ms ease-out, stroke-width 300ms ease-out;
+}
+
+.flow-paths .flow-inactive {
+  opacity: 0.15;
+  stroke-width: 2;
+}
+
+.flow-paths .flow-active {
+  opacity: 0.95;
+  stroke-width: 3;
+  animation: fuelFlow 1.2s linear infinite;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+@keyframes fuelFlow {
+  from {
+    stroke-dashoffset: 12;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ============================================================================
+   Layer 7: Status Text
+   ============================================================================ */
+
+.status-text-layer .status-text {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.status-text-layer .switching-indicator {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.3px;
+  animation: switchingBlink 1s ease-in-out infinite;
+}
+
+@keyframes switchingBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ============================================================================
+   Layer 8: Scenario Label
+   ============================================================================ */
+
+.scenario-label-layer .scenario-label {
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================================
+   Fuel Details (Below SVG)
+   ============================================================================ */
+
+.fuel-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(45, 55, 72, 0.5);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.fuel-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(26, 32, 44, 0.8);
+  border: 2px solid;
+  border-radius: 6px;
+  transition: all 300ms ease-out;
+}
+
+.fuel-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fuel-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.fuel-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #e2e8f0;
+}
+
+.heat-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.heat-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.heat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   Responsive Design
+   ============================================================================ */
+
+@media (max-width: 767px) {
+  .keke-visualizer-container {
+    padding: 0.75rem;
+  }
+
+  .fuel-details {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .fuel-badge {
+    justify-content: center;
+  }
+
+  .heat-indicator {
+    justify-content: center;
+  }
+
+  /* Simplify animations on mobile */
+  .flow-paths .flow-active {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .thermal-zone .heat-glow {
+    animation: none;
+  }
+
+  .energy-nodes .node-active .node-inner {
+    animation: none;
+  }
+
+  .fuel-system-internal .fuel-tank,
+  .fuel-system-internal .engine-compartment {
+    filter: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .keke-visualizer-container {
+    padding: 0.5rem;
+  }
+
+  .status-text-layer .status-text {
+    font-size: 12px;
+  }
+
+  .scenario-label-layer .scenario-label {
+    font-size: 10px;
+  }
+}
+
+/* ============================================================================
+   Performance Optimizations
+   ============================================================================ */
+
+.wheel,
+.road-surface,
+.heat-glow,
+.flow-path,
+.node-inner {
+  will-change: transform;
+}
+
+/* ============================================================================
+   Accessibility
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .road-surface,
+  .wheel,
+  .heat-glow,
+  .flow-path,
+  .node-inner,
+  .headlight,
+  .switching-indicator,
+  .fuel-line-group {
+    animation: none !important;
+  }
+
+  .fuel-badge:hover {
+    transform: none;
+  }
+
+  .flow-paths .flow-active {
+    stroke-dasharray: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .keke-visualizer-container {
+    border: 2px solid currentColor;
+  }
+
+  .vehicle-body .keke-body {
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .energy-nodes .node-outer {
+    stroke-width: 3;
+  }
+}
+
+/* ============================================================================
+   Print Styles
+   ============================================================================ */
+
+@media print {
+  .keke-visualizer-container {
+    background: white;
+    box-shadow: none;
+  }
+
+  .road-surface,
+  .wheel,
+  .heat-glow,
+  .flow-path,
+  .node-inner {
+    animation: none !important;
+  }
+}

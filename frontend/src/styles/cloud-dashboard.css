@@ -1,0 +1,319 @@
+/* ============================================================================
+   Agentic AI Smart Fleet Dashboard Styles
+   Aligned with Future Implementation Vision
+   ============================================================================ */
+
+.cloud-dashboard {
+  --cloud-bg-deep: #0f172a;
+  --cloud-bg-card: rgba(30, 41, 59, 0.7);
+  --cloud-primary: #6366f1;
+  --cloud-primary-glow: rgba(99, 102, 241, 0.3);
+  --cloud-accent: #10b981;
+  --cloud-accent-glow: rgba(16, 185, 129, 0.3);
+  --cloud-warning: #f59e0b;
+  --cloud-danger: #ef4444;
+  --cloud-text-main: #f8fafc;
+  --cloud-text-dim: #94a3b8;
+  --cloud-border: rgba(255, 255, 255, 0.08);
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+  color: var(--cloud-text-main);
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* ---- Header Enhancements ---- */
+.cloud-header {
+  padding: 1.5rem 3rem;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--cloud-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.cloud-header h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- Fleet KPIs ---- */
+.fleet-summary-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  padding: 2rem 3rem 1rem;
+}
+
+.kpi-card {
+  background: var(--cloud-bg-card);
+  border: 1px solid var(--cloud-border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kpi-card:hover {
+  border-color: var(--cloud-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px -10px var(--cloud-primary-glow);
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cloud-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.kpi-trend {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  margin-left: auto;
+}
+
+.trend-up { background: rgba(16, 185, 129, 0.1); color: var(--cloud-accent); }
+
+/* ---- Main Grid Layout ---- */
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  padding: 0 3rem 3rem;
+}
+
+/* ---- Map Placeholder ---- */
+.map-container {
+  height: 450px;
+  background: #020617;
+  border-radius: 1.5rem;
+  border: 1px solid var(--cloud-border);
+  position: relative;
+  overflow: hidden;
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--cloud-border);
+}
+
+.map-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--cloud-primary);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--cloud-primary-glow);
+  transition: all 0.3s;
+}
+
+.map-marker:hover {
+  transform: rotate(-45deg) scale(1.3);
+  z-index: 10;
+}
+
+.map-marker.warning { background: var(--cloud-danger); box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+
+/* ---- Donut Chart ---- */
+.chart-card {
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.donut-chart {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--cloud-primary) 0deg 120deg,
+    var(--cloud-accent) 120deg 240deg,
+    var(--cloud-warning) 240deg 360deg
+  );
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-chart::after {
+  content: '';
+  width: 140px;
+  height: 140px;
+  background: #1e293b;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.donut-label {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.donut-title { font-size: 0.75rem; color: var(--cloud-text-dim); text-transform: uppercase; }
+.donut-value { font-size: 1.75rem; font-weight: 800; }
+
+/* ---- AI Agent Engine Diagram ---- */
+.ai-engine-panel {
+  grid-column: span 2;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-engine-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05), transparent);
+}
+
+.engine-column { display: flex; flex-direction: column; gap: 1.5rem; position: relative; z-index: 10; }
+
+.engine-box {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--cloud-border);
+}
+
+.box-title { font-size: 0.7rem; font-weight: 800; color: var(--cloud-primary); text-transform: uppercase; margin-bottom: 0.75rem; display: block; }
+.box-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--cloud-text-dim); margin-bottom: 0.5rem; }
+.box-item strong { color: #fff; }
+
+.ai-central-core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.core-circle {
+  width: 140px;
+  height: 140px;
+  background: var(--cloud-bg-deep);
+  border-radius: 50%;
+  border: 4px solid var(--cloud-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  box-shadow: 0 0 50px -10px var(--cloud-primary-glow);
+  position: relative;
+}
+
+.core-pulse {
+  position: absolute;
+  top: -10px; left: -10px; right: -10px; bottom: -10px;
+  border: 2px solid var(--cloud-primary);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+
+/* ---- Policy & Compliance ---- */
+.policy-card {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), transparent);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.policy-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.compliance-check {
+  width: 12px;
+  height: 12px;
+  background: var(--cloud-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cloud-accent-glow);
+}
+
+/* ---- Vehicle Grid ---- */
+.vehicle-grid-section {
+  grid-column: span 2;
+}
+
+.vehicle-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.vehicle-compact-card {
+  background: var(--cloud-bg-card);
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--cloud-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.v-header { display: flex; justify-content: space-between; align-items: center; }
+.v-id { font-family: monospace; font-weight: 700; color: var(--cloud-primary); }
+.v-type { font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 4px; color: var(--cloud-text-dim); text-transform: uppercase; }
+
+/* ---- Responsive ---- */
+@media (max-width: 1200px) {
+  .fleet-summary-row { grid-template-columns: repeat(3, 1fr); }
+  .dashboard-main-grid { grid-template-columns: 1fr; }
+  .ai-engine-panel { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+@media (max-width: 768px) {
+  .fleet-summary-row { grid-template-columns: repeat(2, 1fr); padding: 1.5rem; }
+  .cloud-header { padding: 1rem 1.5rem; }
+  .dashboard-main-grid { padding: 1.5rem; }
+}
