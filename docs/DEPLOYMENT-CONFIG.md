@@ -1,327 +1,284 @@
 # Deployment Configuration Guide
 
-This guide explains how to configure the Climate-Smart Telemetry Platform for different deployment scenarios.
+This guide is the practical deployment map for the current codebase.
 
----
+It is written around the architecture that actually works today:
+
+- **live board demo:** ESP32 connected locally over USB serial
+- **cloud/fleet view:** ESP32 posts telemetry to a reachable backend over Wi-Fi
+- **frontend deployment:** Netlify-hosted static React app
+- **backend deployment:** local machine for hardware demos, Render or similar for cloud-only access
+
+## Recommended Deployment Modes
+
+### Mode A: Live Hardware Demo
+
+Use this when you need the judge to see:
+
+- the **ESP32 board**
+- the **LCD**
+- the **local dashboard**
+- the **same telemetry flowing end to end**
+
+Architecture:
+
+```text
+ESP32 on COM6
+-> local FastAPI backend in serial mode
+-> local React dashboard
+```
+
+This is the **recommended competition demo mode**.
+
+### Mode B: Cloud / Fleet Monitoring Demo
+
+Use this when you want to show fleet-style presentation beyond one board.
+
+Architecture:
+
+```text
+ESP32
+-> Wi-Fi POST /api/telemetry
+-> backend reachable on LAN or public internet
+-> Cloud Dashboard / fleet summary
+```
+
+This is best presented as the **scalable extension layer**, not the main proof that the board works.
+
+### Mode C: UI-Only Backup Demo
+
+Use this when hardware is unavailable.
+
+Architecture:
+
+```text
+Frontend
+-> backend simulator mode
+-> simulated telemetry
+```
+
+This is your fallback, not your primary demo.
 
 ## Frontend Configuration
 
-### Environment Variables
+Location:
 
-Create a `.env` file in the `frontend/` directory (copy from `.env.example`):
+- `frontend/`
 
-```bash
-# Backend API URL
-VITE_API_URL=http://localhost:8000/api
-```
+Key environment variable:
 
-### Deployment Scenarios
-
-#### Local Development
 ```bash
 VITE_API_URL=http://localhost:8000/api
 ```
 
-#### Production (Same Host)
+### Local Demo
+
 ```bash
-VITE_API_URL=http://your-domain.com/api
+VITE_API_URL=http://localhost:8000/api
 ```
 
-#### Production (Different Host)
+### Netlify Production
+
 ```bash
-VITE_API_URL=https://api.your-domain.com/api
+VITE_API_URL=https://your-backend-domain/api
 ```
 
-### Build Commands
+### Build
 
 ```bash
-# Development
 cd frontend
-pnpm install
-pnpm dev
-
-# Production Build
-pnpm build
-# Output: frontend/dist/
+npm install
+npm run build
 ```
 
----
+Output:
+
+- `frontend/dist/`
+
+## Netlify Configuration
+
+The project already includes:
+
+- [`frontend/netlify.toml`](../frontend/netlify.toml)
+
+When connecting the repo in Netlify, use:
+
+- **Base directory:** `frontend`
+- **Build command:** `pnpm run build`
+- **Publish directory:** `dist`
+- **Node version:** `20`
+
+Set this production environment variable in Netlify:
+
+```text
+VITE_API_URL=https://your-real-backend/api
+```
 
 ## Backend Configuration
 
-### Environment Variables
+Location:
 
-Create a `.env` file in the `backend/` directory (copy from `.env.example`):
+- `backend/`
 
-```bash
-# Ingestion mode: "simulator" or "serial"
-INGESTION_MODE=simulator
+Example environment values:
 
-# Serial port configuration (for serial mode)
-SERIAL_PORT=/dev/ttyUSB0
-SERIAL_BAUD_RATE=115200
-```
-
-### Deployment Scenarios
-
-#### Demo Mode (No Hardware)
 ```bash
 INGESTION_MODE=simulator
-```
-
-#### Serial Mode (USB Connection)
-```bash
-INGESTION_MODE=serial
-SERIAL_PORT=/dev/ttyUSB0    # Linux
-# SERIAL_PORT=COM3          # Windows
+SERIAL_PORT=COM6
 SERIAL_BAUD_RATE=115200
+OPENAI_API_KEY=sk-your-key-here
 ```
 
-#### LTE Mode (Future)
-```bash
-INGESTION_MODE=lte
-LTE_ENDPOINT=https://your-lte-gateway.com/ingest
-```
+## Backend Modes
 
-### Run Commands
+### Simulator Mode
 
-```bash
-# Development
+```powershell
 cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python -m app.main
-
-# Production
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+$env:INGESTION_MODE="simulator"
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
----
+### Serial Mode (Live ESP32 Demo)
+
+```powershell
+cd backend
+$env:INGESTION_MODE="serial"
+$env:SERIAL_PORT="COM6"
+$env:SERIAL_BAUD_RATE="115200"
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Important:
+
+- `serial` mode only works on the machine physically connected to the board
+- a cloud host such as Render cannot read your laptop USB serial port
+
+### Public Backend For Cloud Telemetry
+
+If the ESP32 is posting to `/api/telemetry`, the backend must be reachable from the board:
+
+- over the same LAN, or
+- over a public hostname/IP
 
 ## Firmware Configuration
 
-### Pin Configuration
+Current working firmware location:
 
-Edit `firmware/micropython/main.py`:
+- [`firmware/arduino/vehicle_system/vehicle_system.ino`](../firmware/arduino/vehicle_system/vehicle_system.ino)
 
-```python
-# Temperature Sensor Pins (DS18B20 OneWire)
-PIN_ENGINE_TEMP = 4      # Engine temperature sensor
-PIN_FUEL_LINE_TEMP = 5   # Fuel line temperature sensor
-PIN_AMBIENT_TEMP = 6     # Ambient temperature sensor
+Configuration file:
 
-# Relay Control Pins (Active LOW)
-PIN_RELAY_1 = 7          # Relay 1: Cooling system
-PIN_RELAY_2 = 8          # Relay 2: Fuel switching
+- [`firmware/arduino/vehicle_system/config.h`](../firmware/arduino/vehicle_system/config.h)
 
-# Status LED Pins
-PIN_LED_STATUS = 9       # Green: System running
-PIN_LED_WARNING = 10     # Yellow: High temperature
-PIN_LED_ERROR = 11       # Red: Overheat / fail-safe
-PIN_LED_ACTIVITY = 12    # Blue: Telemetry transmission
+### Serial Dashboard Demo
+
+The firmware already emits dashboard-compatible serial JSON at:
+
+- `115200` baud
+
+### Cloud Dashboard Demo
+
+For cloud posting, set local values in `config.h`:
+
+```cpp
+#define WIFI_SSID       "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD   "YOUR_WIFI_PASSWORD"
+#define CLOUD_ENDPOINT  "http://192.168.x.x:8000/api/telemetry"
 ```
 
-### Safety Thresholds
+Important:
 
-Edit `firmware/micropython/main.py`:
+- do not commit real Wi-Fi credentials
+- do not commit your private LAN IP unless you intentionally want it public
 
-```python
-# Safety Thresholds (°C)
-THRESHOLD_ENGINE_OVERHEAT = 100.0   # Fail-safe activation
-THRESHOLD_FUEL_LINE_MAX = 90.0      # Fail-safe activation
-THRESHOLD_ENGINE_OPTIMAL = 80.0     # Warning threshold
-THRESHOLD_COOLING_ACTIVATE = 90.0   # Relay 1 activation
-THRESHOLD_FUEL_SWITCH = 80.0        # Relay 2 activation
+## Windows Networking Notes
+
+For LAN cloud telemetry to work on Windows:
+
+1. backend must run with `--host 0.0.0.0`
+2. the ESP32 and laptop must be on the same network
+3. inbound TCP `8000` may need to be allowed through Windows Firewall
+
+Administrator PowerShell example:
+
+```powershell
+netsh advfirewall firewall add rule name="Vehicle AI Backend 8000" dir=in action=allow protocol=TCP localport=8000
 ```
-
-### Upload to ESP32
-
-```bash
-# Install ampy (if not already installed)
-pip install adafruit-ampy
-
-# Upload files
-cd firmware/micropython
-ampy --port /dev/ttyUSB0 put main.py
-ampy --port /dev/ttyUSB0 put sensors.py
-ampy --port /dev/ttyUSB0 put relays.py
-ampy --port /dev/ttyUSB0 put status_leds.py
-ampy --port /dev/ttyUSB0 put telemetry.py
-
-# Reset ESP32 to run
-# Press reset button or:
-ampy --port /dev/ttyUSB0 reset
-```
-
----
-
-## Mode Combinations
-
-### Competition Demo (Offline)
-- **Frontend**: Mock mode (no backend needed)
-- **Backend**: Not running
-- **Firmware**: Not needed
-- **Use Case**: Offline dashboard demonstration
-
-### Development (Simulator)
-- **Frontend**: Backend API mode (`VITE_API_URL=http://localhost:8000/api`)
-- **Backend**: Simulator mode (`INGESTION_MODE=simulator`)
-- **Firmware**: Not needed
-- **Use Case**: Full-stack development without hardware
-
-### Lab Testing (Serial)
-- **Frontend**: Backend API mode (`VITE_API_URL=http://localhost:8000/api`)
-- **Backend**: Serial mode (`INGESTION_MODE=serial`, `SERIAL_PORT=/dev/ttyUSB0`)
-- **Firmware**: Running on ESP32
-- **Use Case**: Hardware integration testing
-
-### Production (LTE) - Future
-- **Frontend**: Backend API mode (`VITE_API_URL=https://api.your-domain.com/api`)
-- **Backend**: LTE mode (`INGESTION_MODE=lte`)
-- **Firmware**: Running on ESP32 with LTE dongle
-- **Use Case**: Remote fleet deployment
-
----
-
-## Port Configuration
-
-### Default Ports
-- **Frontend Dev Server**: `http://localhost:5173` (Vite default)
-- **Backend API**: `http://localhost:8000`
-- **Serial Communication**: 115200 baud
-
-### Firewall Rules (Production)
-```bash
-# Allow HTTP/HTTPS
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-
-# Allow backend API (if on different port)
-sudo ufw allow 8000/tcp
-```
-
----
 
 ## Health Checks
 
-### Frontend
-```bash
-# Check if frontend is running
-curl http://localhost:5173
-```
-
 ### Backend
-```bash
-# Health check endpoint
-curl http://localhost:8000/api/health
 
-# Expected response:
-# {
-#   "status": "ok",
-#   "mode": "simulator",
-#   "telemetry_available": true,
-#   "ingestion_connected": true
-# }
+```bash
+http://localhost:8000/api/health
 ```
 
-### Firmware
-```bash
-# Monitor serial output
-screen /dev/ttyUSB0 115200
-# or
-python -m serial.tools.miniterm /dev/ttyUSB0 115200
+Expected example:
 
-# Expected output: JSON telemetry messages every 2 seconds
+```json
+{
+  "status": "ok",
+  "mode": "serial",
+  "telemetry_available": true,
+  "fleet_size": 0,
+  "ingestion_connected": true
+}
 ```
 
----
+### Live Serial Telemetry
 
-## Troubleshooting
+```bash
+http://localhost:8000/api/latest
+```
 
-### Frontend can't connect to backend
-1. Check `VITE_API_URL` in `.env`
-2. Verify backend is running: `curl http://localhost:8000/api/health`
-3. Check CORS configuration in `backend/app/main.py`
+### Cloud Telemetry
 
-### Backend can't read serial port
-1. Check port name: `ls /dev/tty*` (Linux) or Device Manager (Windows)
-2. Check permissions: `sudo usermod -a -G dialout $USER` (Linux)
-3. Verify baud rate matches firmware (115200)
-4. Check `SERIAL_PORT` in backend `.env`
+```bash
+http://localhost:8000/api/telemetry/latest
+```
 
-### Firmware not transmitting
-1. Check serial connection: `screen /dev/ttyUSB0 115200`
-2. Verify sensors are connected (check startup messages)
-3. Check pin configuration matches hardware
-4. Press reset button on ESP32
+## Recommended Demo Startup Order
 
-### Dashboard shows "Initializing..."
-1. Check if backend is running
-2. Check if telemetry is being generated (backend logs)
-3. Verify API URL is correct
-4. Check browser console for errors
+### Live Board Demo
 
----
+1. connect ESP32 over USB
+2. confirm the board is on `COM6`
+3. start backend in `serial` mode
+4. start frontend locally
+5. confirm dashboard source is `ESP32`
+6. demonstrate sensor change, LCD change, and dashboard change together
 
-## Security Considerations
+### Cloud View Demo
 
-### Development
-- CORS allows all origins (`allow_origins=["*"]`)
-- No authentication required
-- Suitable for local development only
+1. update `config.h` locally with Wi-Fi and `CLOUD_ENDPOINT`
+2. flash firmware
+3. start backend with `--host 0.0.0.0`
+4. confirm `/api/telemetry/latest` receives posts
+5. open the Cloud Dashboard
 
-### Production
-- Restrict CORS to frontend domain
-- Add API key authentication
-- Use HTTPS for all connections
-- Implement rate limiting
-- Add input validation and sanitization
+## What To Deploy Publicly
 
----
+### Safe To Deploy
 
-## Performance Tuning
+- frontend on Netlify
+- backend on Render or similar for simulator/cloud HTTP APIs
+- README, docs, screenshots, architecture assets
 
-### Frontend
-- Adjust polling interval in `useTelemetry.ts` (default: 2000ms)
-- Adjust history window in `useTelemetry.ts` (default: 60000ms)
+### Not A Public Deployment Primitive
 
-### Backend
-- Adjust history duration in `telemetry_store.py` (default: 60s)
-- Adjust simulator interval in `simulator.py` (default: 2.0s)
+- USB serial access to the board
+- local COM-port-dependent ingestion
+- real Wi-Fi credentials inside firmware config
 
-### Firmware
-- Adjust sampling interval in `main.py` (default: 2000ms)
-- Adjust telemetry interval in `main.py` (default: 2000ms)
+## Final Recommendation
 
----
+For final judging, treat the system as two connected stories:
 
-## Monitoring
+1. **proof of real hardware intelligence**
+   - ESP32 + LCD + local serial dashboard
 
-### Logs
+2. **proof of scalable fleet vision**
+   - cloud dashboard + fleet summary + AI insight API
 
-**Frontend** (Browser Console):
-- Connection status
-- API errors
-- Telemetry updates
-
-**Backend** (stdout):
-- Ingestion mode
-- Connection status
-- Telemetry processing
-- Errors and warnings
-
-**Firmware** (Serial Monitor):
-- Sensor readings
-- AI recommendations
-- Relay states
-- Fail-safe activations
-
-### Metrics to Monitor
-
-- Telemetry message rate (should be ~0.5 Hz)
-- API response time (should be < 100ms)
-- Memory usage (backend should be < 50MB)
-- Temperature readings (should be in valid ranges)
-- Fail-safe activations (should be rare)
-
+That keeps the demo honest, strong, and easy to explain.

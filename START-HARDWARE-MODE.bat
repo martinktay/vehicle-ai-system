@@ -1,63 +1,59 @@
 @echo off
-REM Climate-Smart Telemetry Platform - Hardware Mode Startup
-REM This script starts the backend in serial mode for hardware integration
+REM Vehicle AI System - Live ESP32 Hardware Demo
+REM Recommended judging path:
+REM ESP32 on COM6 -> local FastAPI serial backend -> local dashboard
 
 echo ========================================
-echo Climate-Smart Telemetry Platform
-echo Hardware Mode Startup
+echo Vehicle AI System
+echo Live Hardware Demo Mode
 echo ========================================
 echo.
 
-REM Check if we're in the correct directory
 if not exist "backend\app\main.py" (
-    echo ERROR: Please run this script from the project root directory
-    echo Current directory: %CD%
+    echo ERROR: Run this script from the project root.
     pause
     exit /b 1
 )
 
-REM Check if virtual environment exists
-if not exist "backend\venv\Scripts\activate.bat" (
-    echo ERROR: Virtual environment not found
-    echo Please run: cd backend ^&^& python -m venv venv ^&^& venv\Scripts\activate.bat ^&^& pip install -r requirements.txt
+if not exist "frontend\package.json" (
+    echo ERROR: Frontend folder not found.
     pause
     exit /b 1
 )
 
-REM Check if .env file exists
-if not exist "backend\.env" (
-    echo WARNING: backend\.env not found
-    echo Creating from .env.example...
-    copy backend\.env.example backend\.env
-    echo.
-    echo IMPORTANT: Please edit backend\.env and set:
-    echo   INGESTION_MODE=serial
-    echo   SERIAL_PORT=COM3  (change to your COM port)
-    echo.
-    echo Press any key to open .env file in Notepad...
-    pause >nul
-    notepad backend\.env
-    echo.
-    echo After saving, press any key to continue...
-    pause >nul
-)
-
-echo Starting backend in serial mode...
+echo This mode is for the real ESP32 board and LCD demonstration.
 echo.
-echo Configuration:
-type backend\.env
+echo Expected path:
+echo   ESP32 on COM6
+echo   ^> local backend in serial mode
+echo   ^> local dashboard
+echo.
+echo Make sure:
+echo   - the ESP32 is connected over USB
+echo   - the firmware is already uploaded
+echo   - no other app is using COM6
+echo.
+echo Press any key to continue or Ctrl+C to cancel...
+pause >nul
+
+echo.
+echo Starting backend in serial mode on COM6...
+start "Backend (ESP32 Serial)" cmd /k "cd /d backend && set INGESTION_MODE=serial && set SERIAL_PORT=COM6 && set SERIAL_BAUD_RATE=115200 && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+echo Waiting for backend to initialize...
+timeout /t 6 /nobreak >nul
+
+echo Starting frontend...
+start "Frontend (Dashboard)" cmd /k "cd /d frontend && pnpm dev"
+
 echo.
 echo ========================================
-echo.
-
-REM Start backend
-cd backend
-call venv\Scripts\activate.bat
-python -m app.main
-
-REM If we get here, backend stopped
-echo.
+echo Demo services started
 echo ========================================
-echo Backend stopped
-echo ========================================
+echo Backend:  http://localhost:8000
+echo Frontend: http://localhost:5173
+echo.
+echo In the dashboard, confirm the source shows ESP32.
+echo Then demonstrate the LCD and dashboard changing together.
+echo.
 pause

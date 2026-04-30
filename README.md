@@ -115,7 +115,7 @@ flowchart LR
 ### Edge Layer: ESP32 Firmware
 
 Location:
-- [C:\projects\vehicle-ai-system\firmware\arduino\vehicle_system\vehicle_system.ino](C:\projects\vehicle-ai-system\firmware\arduino\vehicle_system\vehicle_system.ino)
+- [firmware/arduino/vehicle_system/vehicle_system.ino](firmware/arduino/vehicle_system/vehicle_system.ino)
 
 Responsibilities:
 
@@ -133,7 +133,7 @@ Important characteristic:
 ### Backend Layer: FastAPI Bridge
 
 Location:
-- [C:\projects\vehicle-ai-system\backend\app\main.py](C:\projects\vehicle-ai-system\backend\app\main.py)
+- [backend/app/main.py](backend/app/main.py)
 
 Responsibilities:
 
@@ -147,7 +147,7 @@ Responsibilities:
 ### Frontend Layer: React Dashboard
 
 Location:
-- [C:\projects\vehicle-ai-system\frontend](C:\projects\vehicle-ai-system\frontend)
+- [frontend/](frontend/)
 
 Responsibilities:
 
@@ -187,7 +187,7 @@ The current firmware is built around:
 - 16x2 LCD
 
 Pin mappings are defined in:
-- [C:\projects\vehicle-ai-system\firmware\arduino\vehicle_system\config.h](C:\projects\vehicle-ai-system\firmware\arduino\vehicle_system\config.h)
+- [firmware/arduino/vehicle_system/config.h](firmware/arduino/vehicle_system/config.h)
 
 ## Telemetry Flows
 
@@ -286,7 +286,7 @@ Interactive docs are available from FastAPI when running locally:
 ### 1. Backend
 
 ```powershell
-cd C:\projects\vehicle-ai-system\backend
+cd backend
 python -m pip install -r requirements.txt
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
@@ -294,7 +294,7 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ### 2. Frontend
 
 ```powershell
-cd C:\projects\vehicle-ai-system\frontend
+cd frontend
 npm install
 npm run build
 npm run dev
@@ -311,7 +311,7 @@ Frontend environment variable:
 Best for UI validation and backup demos.
 
 ```powershell
-cd C:\projects\vehicle-ai-system\backend
+cd backend
 $env:INGESTION_MODE="simulator"
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
@@ -321,7 +321,7 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 Best for live hardware demos where the dashboard must say `SOURCE: ESP32`.
 
 ```powershell
-cd C:\projects\vehicle-ai-system\backend
+cd backend
 $env:INGESTION_MODE="serial"
 $env:SERIAL_PORT="COM6"
 $env:SERIAL_BAUD_RATE="115200"
@@ -433,7 +433,7 @@ The frontend is a Vite React app and can be deployed to a static host such as:
 - Netlify
 
 There is already a `netlify.toml` in:
-- [C:\projects\vehicle-ai-system\frontend\netlify.toml](C:\projects\vehicle-ai-system\frontend\netlify.toml)
+- [frontend/netlify.toml](frontend/netlify.toml)
 
 ### Backend
 
@@ -453,12 +453,12 @@ For deployed frontend/backend setups, ensure:
 
 Useful supporting documents in this repository:
 
-- [C:\projects\vehicle-ai-system\docs\architecture.md](C:\projects\vehicle-ai-system\docs\architecture.md)
-- [C:\projects\vehicle-ai-system\docs\demo-script.md](C:\projects\vehicle-ai-system\docs\demo-script.md)
-- [C:\projects\vehicle-ai-system\docs\DEPLOYMENT-CONFIG.md](C:\projects\vehicle-ai-system\docs\DEPLOYMENT-CONFIG.md)
-- [C:\projects\vehicle-ai-system\docs\HARDWARE-INTEGRATION-SUMMARY.md](C:\projects\vehicle-ai-system\docs\HARDWARE-INTEGRATION-SUMMARY.md)
-- [C:\projects\vehicle-ai-system\docs\frontend-spec.md](C:\projects\vehicle-ai-system\docs\frontend-spec.md)
-- [C:\projects\vehicle-ai-system\docs\backend-spec.md](C:\projects\vehicle-ai-system\docs\backend-spec.md)
+- [docs/architecture.md](docs/architecture.md)
+- [docs/demo-script.md](docs/demo-script.md)
+- [docs/DEPLOYMENT-CONFIG.md](docs/DEPLOYMENT-CONFIG.md)
+- [docs/HARDWARE-INTEGRATION-SUMMARY.md](docs/HARDWARE-INTEGRATION-SUMMARY.md)
+- [docs/frontend-spec.md](docs/frontend-spec.md)
+- [docs/backend-spec.md](docs/backend-spec.md)
 
 ## Roadmap
 

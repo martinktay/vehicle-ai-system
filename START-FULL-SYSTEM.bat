@@ -1,67 +1,53 @@
 @echo off
-REM Climate-Smart Telemetry Platform - Full System Startup
-REM This script starts both backend (serial mode) and frontend
+REM Vehicle AI System - Full Demo Startup
+REM Starts the local serial proof path and leaves room for cloud/fleet storytelling.
 
 echo ========================================
-echo Climate-Smart Telemetry Platform
-echo Full System Startup
+echo Vehicle AI System
+echo Full Demo Startup
 echo ========================================
 echo.
 
-REM Check if we're in the correct directory
 if not exist "backend\app\main.py" (
-    echo ERROR: Please run this script from the project root directory
-    echo Current directory: %CD%
+    echo ERROR: Run this script from the project root.
     pause
     exit /b 1
 )
 
 if not exist "frontend\package.json" (
-    echo ERROR: Please run this script from the project root directory
-    echo Current directory: %CD%
+    echo ERROR: Frontend folder not found.
     pause
     exit /b 1
 )
 
-echo This will start:
-echo   1. Backend (serial mode) - reads from ESP32
-echo   2. Frontend (dashboard) - displays telemetry
+echo This startup path is optimized for the final demo:
+echo   1. Real ESP32 telemetry on the Serial Dashboard
+echo   2. LCD correspondence with dashboard values
+echo   3. Optional cloud/fleet storytelling afterward
 echo.
-echo Make sure:
-echo   - ESP32 is connected via USB
-echo   - backend\.env is configured with correct COM port
-echo   - Firmware is uploaded to ESP32
+echo Expected board port: COM6
 echo.
 echo Press any key to continue or Ctrl+C to cancel...
 pause >nul
 
-REM Start backend in new window
-echo.
-echo Starting backend...
-start "Backend (Serial Mode)" cmd /k "cd backend && venv\Scripts\activate.bat && python -m app.main"
+start "Backend (ESP32 Serial)" cmd /k "cd /d backend && set INGESTION_MODE=serial && set SERIAL_PORT=COM6 && set SERIAL_BAUD_RATE=115200 && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
-REM Wait for backend to start
-echo Waiting for backend to start (5 seconds)...
-timeout /t 5 /nobreak >nul
+echo Waiting for backend to initialize...
+timeout /t 6 /nobreak >nul
 
-REM Start frontend in new window
-echo.
-echo Starting frontend...
-start "Frontend (Dashboard)" cmd /k "cd frontend && pnpm dev"
+start "Frontend (Dashboard)" cmd /k "cd /d frontend && pnpm dev"
 
 echo.
 echo ========================================
-echo System started!
+echo System started
 echo ========================================
-echo.
-echo Backend: http://localhost:8000
+echo Backend:  http://localhost:8000
 echo Frontend: http://localhost:5173
 echo.
-echo Two new windows opened:
-echo   1. Backend (Serial Mode)
-echo   2. Frontend (Dashboard)
+echo Primary proof:
+echo   ESP32 -> local backend -> Serial Dashboard
 echo.
-echo Close those windows to stop the system.
+echo Secondary story:
+echo   Cloud Dashboard -> fleet monitoring vision
 echo.
-echo Press any key to exit this window...
-pause >nul
+pause

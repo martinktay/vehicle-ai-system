@@ -144,12 +144,20 @@ async def health():
 @app.get("/api/health")
 async def api_health():
     """Detailed health check for the bridge service."""
+    current = await telemetry_store.get_current()
+    ingestion_connected = True
+
+    if INGESTION_MODE.lower() == "serial":
+        ingestion_connected = bool(
+            ingestion_source and hasattr(ingestion_source, "is_connected") and ingestion_source.is_connected()
+        )
+
     return {
         "status": "ok",
         "mode": INGESTION_MODE,
-        "telemetry_available": True,
+        "telemetry_available": current is not None,
         "fleet_size": len(fleet_telemetry),
-        "ingestion_connected": True
+        "ingestion_connected": ingestion_connected
     }
 
 
